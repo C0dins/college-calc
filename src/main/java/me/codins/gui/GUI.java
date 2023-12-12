@@ -1,88 +1,148 @@
 package me.codins.gui;
-
 import com.github.weisj.darklaf.LafManager;
+import com.github.weisj.darklaf.iconset.AllIcons;
 import com.github.weisj.darklaf.theme.OneDarkTheme;
+import me.codins.utils.HelperFunctions;
 
 import javax.swing.*;
 import java.awt.*;
-import javax.swing.WindowConstants;
 
 public class GUI {
 
-    private Double assignmentGradesPercentage;
-    private Double examGradesPercentage;
-    private JFrame frame;
-    public GridBagLayout gbl;
-    public GridBagConstraints gbc;
+    private static final int INITIAL_WIDTH = 350;
+    private static final int INITIAL_HEIGHT = 450;
+    private HelperFunctions functions;
 
-    public void loadGUI(){
-        //Theme
+    public void loadGUI() {
+        functions = new HelperFunctions();
         LafManager.install(new OneDarkTheme());
 
-        gbl =  new GridBagLayout();
-        gbc =  new GridBagConstraints();
+        JFrame frame = new JFrame("Weighted Final Grade Calculator");
+        initFrame(frame);
+        functions.initIcon(frame);
 
-        //Initiate Frame
-        frame = new JFrame("Weighted Final Grade Calculator");
-        frame.setLayout(gbl);
-        JPanel panel = getPanel();
+        JPanel panel = initPanel();
 
-        //Scale Favicon
-        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/calc.png"));
-        Image scaledIcon = icon.getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-        icon = new ImageIcon(scaledIcon).getImage();  // transform it back
-
-        //Add panel to frame
-        frame.setIconImage(scaledIcon);
         frame.add(panel);
-        frame.setSize(500, 625);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
-
     }
 
-    private JPanel getPanel() {
-        gbl = new GridBagLayout();
-        gbc = new GridBagConstraints();
+    private void initFrame(JFrame frame) {
+        // Set initial size and center the window on the screen
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (screenSize.width - INITIAL_WIDTH) / 2;
+        int y = (screenSize.height - INITIAL_HEIGHT) / 2;
 
+        frame.setSize(INITIAL_WIDTH, INITIAL_HEIGHT);
+        frame.setLocation(x, y);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
+
+    private JPanel initPanel() {
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.gridwidth = 2; // Span two columns
+        gbc.insets = new Insets(5, 10, 5, 10);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        // Grade Wanted Section
+        double gradeWanted = initLabelAndTextField(panel, gbc, "Grade Wanted (%)");
+        gbc.gridy++; // Move to the next row
+
+        // Left Section: Components for Current Grades
+        double currentExamGrade = initLabelAndTextField(panel, gbc, "Exam Grade (%)");
+        gbc.gridy++; // Move to the next row
+        double currentAssignmentGrade = initLabelAndTextField(panel, gbc, "Assignment Grade (%)");
+
+        // Add a custom separator under the current grades
+        gbc.gridy++; // Move to the next row
+        gbc.gridwidth = 2; // Span two columns
+        panel.add(new CustomSeparator(JSeparator.HORIZONTAL, 195, 2), gbc);
+
+        // Reset grid width for the next components
         gbc.gridwidth = 1;
-        gbc.gridheight = 1;
 
-        JLabel assignmentWeightLabel = new JLabel("What is your assignments weighted at? (Example .30)");
-        JLabel examWeightLabel = new JLabel("What is your exams weighted at? (Example .40)");
-        JLabel finalWeightLabel = new JLabel("What is your final exam weighted at? (Example .30)");
-        
-        JTextField assignmentWeightField = new JTextField(6);
-        JTextField examWeightField = new JTextField(6);
-        JTextField finalWeightField = new JTextField(6);
+        // Right Section: Components for Weights
+        gbc.gridy++; // Move to the next row
+        double assignmentsWeight = initLabelAndTextField(panel, gbc, "Assignments Weight");
 
-        //Add Fields to Labels
-        examWeightLabel.add(examWeightField);
-        assignmentWeightLabel.add(assignmentWeightField);
-        finalWeightLabel.add(finalWeightField);
-        
-        //Buttons
-        JButton calculateButton = new JButton("Calculate!");
-        calculateButton.setBorderPainted(false);
-        calculateButton.setContentAreaFilled(false);
-        calculateButton.setOpaque(true);
-        
-        JPanel panel = new JPanel();
+        gbc.gridy++; // Move to the next row
+        double examsWeight = initLabelAndTextField(panel, gbc, "Exams Weight");
 
-        //Add Components to panel
-        panel.add(finalWeightLabel);
-        panel.add(examWeightLabel);
-        panel.add(assignmentWeightLabel);
+        gbc.gridy++; // Move to the next row
+        double finalExamWeight = initLabelAndTextField(panel, gbc, "Final Exam Weight");
 
-        panel.add(finalWeightField);
-        panel.add(examWeightField);
-        panel.add(assignmentWeightField);
+        // Calculate Button
+        gbc.gridx = 0; // Move to the first column
+        gbc.gridy++; // Move to the next row
+        gbc.gridwidth = 2; // Span two columns
+        initCalculateButton(panel, gbc);
 
-        panel.add(calculateButton);
         return panel;
     }
 
 
+    // Modify the initLabelAndTextField method to directly return the parsed values
+    private double initLabelAndTextField(JPanel panel, GridBagConstraints gbc, String label) {
+        JLabel gradeLabel = new JLabel(label);
+        JTextField gradeTextField = new JTextField(5);
+
+        panel.add(gradeLabel, gbc);
+        gbc.gridx++; // Move to the next column
+        panel.add(gradeTextField, gbc);
+
+        // Increment only if not in the last row
+        if (gbc.gridy < 11) {
+            gbc.gridx = 0; // Reset to the first column for the next row
+            gbc.gridy++; // Move to the next row
+        }
+
+        // Return the parsed value
+        return functions.validateAndParse(gradeTextField, label);
+    }
+
+    private void initCalculateButton(JPanel panel, GridBagConstraints gbc) {
+        JButton calculateButton = new JButton("Calculate!");
+        calculateButton.addActionListener(e -> calculateAndShowResult(panel));
+        panel.add(calculateButton, gbc);
+    }
+
+    private void calculateAndShowResult(JPanel panel) {
+        // Validate and retrieve values from text fields
+        double currentExamGrade = functions.validateAndParse(functions.getTextField(panel, 1), "Exam Grade");
+        double currentAssignmentGrade = functions.validateAndParse(functions.getTextField(panel, 3), "Assignment Grade");
+
+        // Validate and retrieve weights from text fields
+        double assignmentsWeight = functions.validateAndParse(functions.getTextField(panel, 5), "Assignments Weight");
+        double examsWeight = functions.validateAndParse(functions.getTextField(panel, 7), "Exams Weight");
+        double finalExamWeight = functions.validateAndParse(functions.getTextField(panel, 9), "Final Exam Weight");
+
+        // Check if validation failed
+        if (Double.isNaN(currentExamGrade) || Double.isNaN(currentAssignmentGrade) ||
+                Double.isNaN(assignmentsWeight) || Double.isNaN(examsWeight) || Double.isNaN(finalExamWeight)) {
+            return;
+        }
+
+        // Check if weights add up to 100
+        double totalWeight = assignmentsWeight + examsWeight + finalExamWeight;
+        System.out.println("Total Weight: " + totalWeight);
+        System.out.println("Assignments Weight: " + assignmentsWeight);
+        System.out.println("Exams Weight: " + examsWeight);
+        System.out.println("Final Exam Weight: " + finalExamWeight);
+        if (totalWeight != 100.00) {
+            handleInvalidWeights(panel);
+            return;
+        }
+
+        // TODO: Add your algorithm calculation here
+
+        // Display the result (you can modify this part based on your UI requirements)
+        JOptionPane.showMessageDialog(panel, "Calculation Result");
+    }
+
+    private void handleInvalidWeights(JPanel panel) {
+            JOptionPane.showMessageDialog(panel, "Weights must add up to 100.");
+    }
 }

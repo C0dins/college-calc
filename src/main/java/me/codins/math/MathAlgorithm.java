@@ -1,4 +1,4 @@
-package me.codins.gui;
+package me.codins.math;
 
 //Help from Chris Vazha with actual math
 //https://github.com/chrisvazha

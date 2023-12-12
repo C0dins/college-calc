@@ -5,16 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0e35f09e-03be-4baf-b179-d313fe0c8693" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/codins/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/codins/gui/GUI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/me/codins/gui/MathAlgorithm.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/codins/gui/CustomSeparator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/me/codins/utils/HelperFunctions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/codins/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/codins/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/codins/gui/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/codins/gui/GUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/me/codins/gui/MathAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/me/codins/math/MathAlgorithm.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +26,13 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2ZQSBdKWadNFdRnaFygyTlZGzpL" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
@@ -37,13 +42,18 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.Main.executor": "Run",
+    "Application.MathAlgorithm.executor": "Run",
+    "Maven.college-grade-calc [clean,install].executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/codin/Desktop/Coding/Java/college-calc",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.keymap"
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -51,7 +61,12 @@
       <recent name="me.codins.gui" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MathAlgorithm">
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn clean install" />
+    </option>
+  </component>
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="me.codins.Main" />
       <module name="college-grade-calc" />
@@ -66,11 +81,11 @@
       </method>
     </configuration>
     <configuration name="MathAlgorithm" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="me.codins.gui.MathAlgorithm" />
+      <option name="MAIN_CLASS_NAME" value="me.codins.math.MathAlgorithm" />
       <module name="college-grade-calc" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="me.codins.gui.*" />
+          <option name="PATTERN" value="me.codins.math.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -80,10 +95,17 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.MathAlgorithm" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="Application.MathAlgorithm" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-17.0.9-corretto-17.0.9-8336523bb0d9-93b19daf" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -95,5 +117,26 @@
       <updated>1702329461214</updated>
     </task>
     <servers />
+  </component>
+  <component name="com.vaadin.designer2.intellij.settings.SizePresetsSettingsComponent">
+    <option name="sizePresets">
+      <list>
+        <SizePreset>
+          <option name="caption" value="Phone" />
+          <option name="height" value="568" />
+          <option name="width" value="320" />
+        </SizePreset>
+        <SizePreset>
+          <option name="caption" value="Tablet" />
+          <option name="height" value="1024" />
+          <option name="width" value="768" />
+        </SizePreset>
+        <SizePreset>
+          <option name="caption" value="Desktop" />
+          <option name="height" value="900" />
+          <option name="width" value="1440" />
+        </SizePreset>
+      </list>
+    </option>
   </component>
 </project>
