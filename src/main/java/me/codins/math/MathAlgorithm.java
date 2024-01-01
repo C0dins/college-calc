@@ -4,21 +4,21 @@ package me.codins.math;
 //https://github.com/chrisvazha
 
 
+import me.codins.categories.Category;
+
+import java.util.ArrayList;
+
 public class MathAlgorithm {
 
-    public static void main(String[] args) {
-        double needed = calculateWeightedGrade(90.00, 92.00, 0.4, 94.58, 0.3, 0.3);
-        System.out.println(needed);
-    }
-    public static double calculateWeightedGrade(double gradeWanted, double examsGrade, double examWeight, double assignmentsGrade, double assignmentsWeight, double finalWeightage){
+    public static double calculateGrade(double gradeWanted, double finalWeight, ArrayList<Category> categories){
 
-        double examScore = (examsGrade / 100) * examWeight;
-        double assignmentScore = (assignmentsGrade / 100) * assignmentsWeight;
+        double preFinalScore = 0;
 
-        double preFinalScore = examScore + assignmentScore;
+        for(Category category : categories){
+            preFinalScore += category.getCalculatedScore();
+        }
 
-        double finalGradeNeeded = (gradeWanted /100) - preFinalScore;
-        finalGradeNeeded = (finalGradeNeeded / finalWeightage) * 100;
+        double finalGradeNeeded = (((gradeWanted / 100) - preFinalScore) / finalWeight) * 100;
 
         return Double.parseDouble(String.format("%.3f", finalGradeNeeded));
     }
