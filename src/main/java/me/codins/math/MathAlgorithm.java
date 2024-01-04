@@ -7,14 +7,16 @@ package me.codins.math;
 import me.codins.categories.Category;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MathAlgorithm {
 
-    public static double calculateGrade(double gradeWanted, double finalWeight, ArrayList<Category> categories){
+    public static double calculateGrade(double gradeWanted, double finalWeight, Map<String, Category> categories){
 
         double preFinalScore = 0;
 
-        for(Category category : categories){
+        for(Category category : categories.values()){
             preFinalScore += category.getCalculatedScore();
         }
 

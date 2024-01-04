@@ -6,16 +6,16 @@ import me.codins.utils.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
-    private static ArrayList<Category> categories = new ArrayList<>();
-    private static double gradeWanted;
-    private static double finalWeight;
+    private static Map<String, Category> categories = new HashMap<>();
 
-    public static void main(String[] args) throws IOException {
-        categories.add(new Category("exams", 92.00, 0.4));
-        categories.add(new Category("assignments", 94.58, 0.3));
+    public static void main(String[] args){
+        categories.put("exams", new Category("exams", 92.00, 0.4));
+        categories.put("assignments", new Category("assignments", 94.58, 0.3));
         Logger logger = new Logger();
         logger.printSplitter();
         logger.printAsciiArt();
@@ -29,13 +29,13 @@ public class Main {
             logger.logQuestion("What would you like to do? (Type the name not #) > ");
             switch (in.nextLine().toLowerCase()){
                 case "list":
-                    if(categories.size() == 0 ){
+                    if(categories.isEmpty()){
                         logger.error("Nothing in list to display");
                         break;
                     }
                     logger.printSplitter();
                     logger.log("Name - Grade - Weight");
-                    for(Category cat : categories){
+                    for(Category cat : categories.values()){
                         logger.log(cat.toString());
                     }
                     logger.printSplitter();
@@ -48,7 +48,7 @@ public class Main {
                     logger.logQuestion("What is the weightage of this grading category on your overall grade? (Ex. 0.4 for 40%) > ");
                     double weight = in.nextDouble();
 
-                    categories.add(new Category(name, grade, weight));
+                    categories.put(name, new Category(name, grade, weight));
                     logger.success("Successfully added '" + name + "' grading category!");
                     break;
                 case "remove":
@@ -57,13 +57,13 @@ public class Main {
                         break;
                     }
                     logger.printSplitter();
-                    for(Category cat : categories){
+                    for(Category cat : categories.values()){
                         logger.log(cat.getName());
                     }
                     logger.printSplitter();
                     logger.logQuestion("Which category would you like to remove? > ");
                     String removeName = in.nextLine().toLowerCase();
-                    if(contains(removeName, categories) == false){
+                    if(!categories.containsKey(removeName)){
                         logger.error(removeName + " does not exist in categories");
                         break;
                     }
@@ -100,23 +100,14 @@ public class Main {
         return " 1. List - List Current Categories\n 2. Add - Add new Grade Category\n 3. Remove - Remove a Grade Category\n 4. Calculate - Calculate Final Grade\n 5. Exit - Exit Program\n";
     }
 
-    public static boolean validateWeight(double finalWeight, ArrayList<Category> categories){
+    public static boolean validateWeight(double finalWeight, Map<String, Category> categories){
         double totalWeight = 0;
         totalWeight += finalWeight;
 
-        for(Category cat : categories){
+        for(Category cat : categories.values()){
             totalWeight += cat.getWeight();
         }
         return totalWeight == 1.00;
     }
 
-    public static boolean contains(String value, ArrayList<Category> categories){
-        for(Category category : categories){
-            if(category.getName().equalsIgnoreCase(value)){
-                return true;
-            }
-        }
-
-        return false;
-    }
 }
