@@ -1,21 +1,16 @@
 package me.codins;
 
-import me.codins.categories.Category;
-import me.codins.math.MathAlgorithm;
-import me.codins.utils.Logger;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import me.codins.categories.Category;
+import me.codins.math.MathAlgorithm;
+import me.codins.utils.Logger;
 
 public class Main {
     private static Map<String, Category> categories = new HashMap<>();
 
     public static void main(String[] args){
-        categories.put("exams", new Category("exams", 92.00, 0.4));
-        categories.put("assignments", new Category("assignments", 94.58, 0.3));
         Logger logger = new Logger();
         logger.printSplitter();
         logger.printAsciiArt();
@@ -27,7 +22,7 @@ public class Main {
         boolean exit = false;
         while(!exit){
             logger.logQuestion("What would you like to do? (Type the name not #) > ");
-            switch (in.nextLine().toLowerCase()){
+            switch (in.nextLine().trim().toLowerCase()){
                 case "list":
                     if(categories.isEmpty()){
                         logger.error("Nothing in list to display");
@@ -42,17 +37,22 @@ public class Main {
                     break;
                 case "add":
                     logger.logQuestion("What is the name of this grading category? (Ex. exams) > ");
-                    String name = in.nextLine().toLowerCase();
+                    String name = in.nextLine().trim().toLowerCase();
                     logger.logQuestion("What is the grade you received or will receive in the category? (Ex. 92.50) > ");
-                    double grade = in.nextDouble();
+                    double grade = Double.parseDouble(in.nextLine());
                     logger.logQuestion("What is the weightage of this grading category on your overall grade? (Ex. 0.4 for 40%) > ");
-                    double weight = in.nextDouble();
+                    double weight = Double.parseDouble(in.nextLine());
+
+                    if(categories.containsKey(name)){
+                        logger.error("Category already exists");
+                        break;
+                    }
 
                     categories.put(name, new Category(name, grade, weight));
                     logger.success("Successfully added '" + name + "' grading category!");
                     break;
                 case "remove":
-                    if(categories.size() == 0 ){
+                    if(categories.isEmpty()){
                         logger.error("Nothing to remove");
                         break;
                     }
@@ -62,19 +62,18 @@ public class Main {
                     }
                     logger.printSplitter();
                     logger.logQuestion("Which category would you like to remove? > ");
-                    String removeName = in.nextLine().toLowerCase();
+                    String removeName = in.nextLine().trim().toLowerCase();
                     if(!categories.containsKey(removeName)){
                         logger.error(removeName + " does not exist in categories");
                         break;
                     }
-                    //fix remove
-                    categories.remove("");
+                    categories.remove(removeName);
                     break;
                 case "calculate":
                     logger.logQuestion("How much is your final worth in terms of weightage (Ex. 0.4 for 40%) > ");
-                    double finalWeightage = in.nextDouble();
+                    double finalWeightage = Double.parseDouble(in.nextLine());
                     logger.logQuestion("What grade do you want? (Ex. 89.5) > ");
-                    double gradeWanted = in.nextDouble();
+                    double gradeWanted = Double.parseDouble(in.nextLine());
                     if (validateWeight(finalWeightage, categories)){
                         double gradeNeeded = MathAlgorithm.calculateGrade(gradeWanted, finalWeightage, categories);
                         logger.log("The grade you need on your final exam to get a " + gradeWanted + " in your class is " + gradeNeeded);
@@ -92,8 +91,6 @@ public class Main {
                     System.out.println(getMenu());
             }
         }
-
-
     }
 
     public static String getMenu(){
@@ -109,5 +106,4 @@ public class Main {
         }
         return totalWeight == 1.00;
     }
-
 }
